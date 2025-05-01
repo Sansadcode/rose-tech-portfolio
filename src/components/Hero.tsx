@@ -1,29 +1,25 @@
-
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const isMobile = useIsMobile();
-
   useEffect(() => {
     setIsLoaded(true);
   }, []);
-
-  return (
-    <section 
-      id="hero" 
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
-    >
+  return <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Modern gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-rose-light/20 to-rose-lighter/30 z-0" />
       
       {/* Abstract background shapes */}
       <div className="absolute inset-0 overflow-hidden z-0">
-        <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-gradient-to-br from-rose-light/30 to-rose/10 blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute bottom-20 left-20 w-64 h-64 rounded-full bg-gradient-to-tr from-rose/20 to-rose-lighter/30 blur-3xl animate-pulse" style={{ animationDuration: '12s' }} />
+        <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-gradient-to-br from-rose-light/30 to-rose/10 blur-3xl animate-pulse" style={{
+        animationDuration: '8s'
+      }} />
+        <div className="absolute bottom-20 left-20 w-64 h-64 rounded-full bg-gradient-to-tr from-rose/20 to-rose-lighter/30 blur-3xl animate-pulse" style={{
+        animationDuration: '12s'
+      }} />
         <div className="absolute top-1/3 -left-10 w-72 h-72 rounded-full bg-gradient-to-r from-rose-lighter/20 to-transparent blur-2xl" />
       </div>
 
@@ -38,9 +34,7 @@ const Hero = () => {
           {/* Text Content */}
           <div className={`space-y-6 md:space-y-8 max-w-xl transition-all duration-700 ease-out ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <div className="space-y-3">
-              <span className="px-4 py-1.5 rounded-full bg-rose-light/20 text-rose font-medium text-sm inline-block">
-                Welcome
-              </span>
+              <span className="px-4 py-1.5 rounded-full bg-rose-light/20 text-rose font-medium text-sm inline-block"></span>
               <h2 className="text-lg text-rose font-medium">Hello, I'm</h2>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-rose to-puce bg-clip-text text-transparent">
                 Sanobia Sadaf
@@ -53,12 +47,11 @@ const Hero = () => {
               Skilled in troubleshooting, cloud computing, and delivering reliable tech solutions.
             </p>
             <div className="pt-4">
-              <Button 
-                className="bg-rose hover:bg-rose/90 text-white px-8 py-6 text-lg rounded-md shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                onClick={() => {
-                  document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
+              <Button className="bg-rose hover:bg-rose/90 text-white px-8 py-6 text-lg rounded-md shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1" onClick={() => {
+              document.getElementById("portfolio")?.scrollIntoView({
+                behavior: "smooth"
+              });
+            }}>
                 Explore My Work
               </Button>
             </div>
@@ -70,7 +63,9 @@ const Hero = () => {
               {/* Profile image container with modern styling */}
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl relative z-10">
                 {/* Decorative rings */}
-                <div className="absolute inset-0 rounded-full border-8 border-rose-light/30 animate-pulse" style={{ animationDuration: '4s' }}></div>
+                <div className="absolute inset-0 rounded-full border-8 border-rose-light/30 animate-pulse" style={{
+                animationDuration: '4s'
+              }}></div>
                 <div className="absolute -inset-1 rounded-full border-4 border-rose/20"></div>
                 
                 {/* Profile placeholder gradient */}
@@ -112,8 +107,6 @@ const Hero = () => {
           <ChevronDown className="w-6 h-6 text-rose" />
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
