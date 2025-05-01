@@ -1,8 +1,24 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Skills = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setIsVisible(true);
+      }
+    }, { threshold: 0.2 });
+    
+    const section = document.getElementById("skills");
+    if (section) observer.observe(section);
+    
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, []);
 
   const categories = [
     { id: "all", name: "All Skills" },
@@ -13,19 +29,19 @@ const Skills = () => {
   ];
 
   const skills = [
-    { name: "HTML", category: "languages", icon: "html" },
-    { name: "Python", category: "languages", icon: "python" },
-    { name: "Bash", category: "languages", icon: "bash" },
-    { name: "Docker", category: "tools", icon: "docker" },
-    { name: "Git", category: "tools", icon: "git" },
-    { name: "Jenkins", category: "tools", icon: "jenkins" },
-    { name: "AWS (EC2, S3, IAM)", category: "cloud", icon: "aws" },
-    { name: "Azure", category: "cloud", icon: "azure" },
-    { name: "Windows", category: "cloud", icon: "windows" },
-    { name: "Ubuntu", category: "cloud", icon: "ubuntu" },
-    { name: "Troubleshooting", category: "support", icon: "troubleshooting" },
-    { name: "Remote Support", category: "support", icon: "remote-support" },
-    { name: "System Diagnosis", category: "support", icon: "system-diagnosis" },
+    { name: "HTML", category: "languages", icon: "html", level: 90 },
+    { name: "Python", category: "languages", icon: "python", level: 85 },
+    { name: "Bash", category: "languages", icon: "bash", level: 75 },
+    { name: "Docker", category: "tools", icon: "docker", level: 80 },
+    { name: "Git", category: "tools", icon: "git", level: 85 },
+    { name: "Jenkins", category: "tools", icon: "jenkins", level: 75 },
+    { name: "AWS (EC2, S3, IAM)", category: "cloud", icon: "aws", level: 85 },
+    { name: "Azure", category: "cloud", icon: "azure", level: 80 },
+    { name: "Windows", category: "cloud", icon: "windows", level: 95 },
+    { name: "Ubuntu", category: "cloud", icon: "ubuntu", level: 85 },
+    { name: "Troubleshooting", category: "support", icon: "troubleshooting", level: 95 },
+    { name: "Remote Support", category: "support", icon: "remote-support", level: 90 },
+    { name: "System Diagnosis", category: "support", icon: "system-diagnosis", level: 85 },
   ];
 
   const filteredSkills = skills.filter(
@@ -92,7 +108,12 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="section-container bg-gray-50">
+    <section id="skills" className="section-container bg-gray-50 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-full h-20 bg-gradient-to-b from-white to-transparent"></div>
+      <div className="absolute -top-20 -left-20 w-64 h-64 bg-rose-light/10 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-rose-lighter/20 rounded-full blur-3xl"></div>
+      
       <h2 className="section-title">My Skills</h2>
       <p className="section-subtitle">
         Technical expertise I've developed through years of practical experience
@@ -104,9 +125,9 @@ const Skills = () => {
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
-              className={`px-4 py-2 rounded-full transition-colors duration-300 ${
+              className={`px-4 py-2 rounded-full transition-all duration-300 transform ${
                 activeCategory === category.id
-                  ? "bg-rose text-white"
+                  ? "bg-rose text-white shadow-md scale-105"
                   : "bg-white text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -120,11 +141,27 @@ const Skills = () => {
         {filteredSkills.map((skill, index) => (
           <div
             key={`${skill.name}-${index}`}
-            className="highlight-card flex flex-col items-center p-4 animate-fade-in"
-            style={{ animationDelay: `${(index % 10) * 0.05}s` }}
+            className={`highlight-card flex flex-col items-center p-4 transition-all duration-500 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            } hover:shadow-md hover:border-rose-light`}
+            style={{ transitionDelay: `${(index % 10) * 0.05 + 0.1}s` }}
           >
-            <div className="mb-3 text-rose">{getIconComponent(skill.icon)}</div>
-            <h3 className="font-medium text-center">{skill.name}</h3>
+            <div className="mb-3 text-rose relative">
+              <div className="absolute inset-0 bg-rose/5 rounded-full blur-md transform scale-150"></div>
+              <div className="relative">{getIconComponent(skill.icon)}</div>
+            </div>
+            <h3 className="font-medium text-center mb-2">{skill.name}</h3>
+            
+            {/* Skill level indicator */}
+            <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+              <div 
+                className="bg-gradient-to-r from-rose-light to-rose h-1.5 rounded-full transition-all duration-1000"
+                style={{ 
+                  width: isVisible ? `${skill.level}%` : "0%",
+                  transitionDelay: `${(index % 10) * 0.05 + 0.3}s`
+                }}
+              ></div>
+            </div>
           </div>
         ))}
       </div>

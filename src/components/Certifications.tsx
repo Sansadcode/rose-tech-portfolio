@@ -1,7 +1,25 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
 
 const Certifications = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setIsVisible(true);
+      }
+    }, { threshold: 0.2 });
+    
+    const section = document.getElementById("certifications");
+    if (section) observer.observe(section);
+    
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, []);
+
   const certifications = [
     {
       id: 1,
@@ -67,7 +85,12 @@ const Certifications = () => {
   ];
 
   return (
-    <section id="certifications" className="section-container bg-gray-50">
+    <section id="certifications" className="section-container bg-gray-50 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-full h-16 bg-gradient-to-b from-white to-transparent"></div>
+      <div className="absolute -top-32 -right-32 w-96 h-96 bg-rose-light/10 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-rose-lighter/15 rounded-full blur-3xl"></div>
+      
       <h2 className="section-title">My Certifications</h2>
       <p className="section-subtitle">
         Professional certifications validating my technical knowledge and skills
@@ -77,13 +100,18 @@ const Certifications = () => {
         {certifications.map((cert, index) => (
           <Card 
             key={cert.id}
-            className="bg-white border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-rose-light animate-fade-in"
-            style={{ animationDelay: `${index * 0.1}s` }}
+            className={`bg-white border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-md hover:border-rose-light ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+            } group`}
+            style={{ transitionDelay: `${index * 0.1}s` }}
           >
-            <CardHeader className="pb-2">
+            <div className="absolute inset-0 bg-gradient-to-br from-rose/5 to-rose-light/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            <CardHeader className="pb-2 relative z-10">
               <div className="flex items-start">
-                <div className="mr-4 mt-1 text-rose">
-                  {cert.icon}
+                <div className="mr-4 mt-1 text-rose relative transition-transform duration-300 group-hover:scale-110">
+                  <div className="absolute inset-0 bg-rose/5 rounded-full blur-md transform scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative">{cert.icon}</div>
                 </div>
                 <div>
                   <CardTitle className="text-lg font-semibold">{cert.title}</CardTitle>
@@ -93,7 +121,7 @@ const Certifications = () => {
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="relative z-10">
               <div className="flex justify-end">
                 <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-rose-light/30 text-rose">
                   Verified
@@ -102,6 +130,14 @@ const Certifications = () => {
             </CardContent>
           </Card>
         ))}
+      </div>
+      
+      {/* Certificate counter animation */}
+      <div className="mt-16 flex flex-col items-center">
+        <div className="text-4xl font-bold text-rose mb-2">
+          {isVisible ? "5+" : "0"}
+        </div>
+        <p className="text-gray-600">Professional Certifications</p>
       </div>
     </section>
   );

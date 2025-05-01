@@ -1,12 +1,24 @@
 
+import { useEffect, useState } from "react";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-gray-900 text-white py-12 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-rose/30 to-transparent"></div>
+      <div className="absolute -top-32 -right-32 w-64 h-64 bg-rose/5 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-rose/10 rounded-full blur-3xl"></div>
+      
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
+          <div className={`transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h3 className="text-2xl font-semibold mb-4 text-rose-light">Sanobia Sadaf</h3>
             <p className="text-gray-400 mb-4">
               IT Support Specialist | DevOps Enthusiast | Cloud Practitioner
@@ -14,7 +26,7 @@ const Footer = () => {
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-gray-400 hover:text-rose-light transition-colors"
+                className="text-gray-400 hover:text-rose-light transition-colors duration-300 transform hover:scale-110"
                 aria-label="LinkedIn"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,7 +37,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-rose-light transition-colors"
+                className="text-gray-400 hover:text-rose-light transition-colors duration-300 transform hover:scale-110"
                 aria-label="GitHub"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -34,7 +46,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-rose-light transition-colors"
+                className="text-gray-400 hover:text-rose-light transition-colors duration-300 transform hover:scale-110"
                 aria-label="Email"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -45,15 +57,16 @@ const Footer = () => {
             </div>
           </div>
 
-          <div>
+          <div className={`transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '0.1s' }}>
             <h3 className="text-lg font-semibold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2">
-              {["About", "Skills", "Portfolio", "Certifications", "Blog", "Contact"].map((item) => (
+              {["About", "Skills", "Portfolio", "Certifications", "Blog", "Contact"].map((item, index) => (
                 <li key={item}>
                   <a
                     href={`#${item.toLowerCase()}`}
-                    className="text-gray-400 hover:text-rose-light transition-colors"
+                    className="text-gray-400 hover:text-rose-light transition-colors duration-300 group flex items-center"
                   >
+                    <span className="w-0 group-hover:w-2 h-px bg-rose-light mr-0 group-hover:mr-2 transition-all duration-300"></span>
                     {item}
                   </a>
                 </li>
@@ -61,13 +74,14 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className={`transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '0.2s' }}>
             <h3 className="text-lg font-semibold mb-4 text-white">Skills</h3>
             <div className="flex flex-wrap gap-2">
-              {["AWS", "Azure", "Docker", "Git", "Jenkins", "Python", "HTML", "Support"].map((skill) => (
+              {["AWS", "Azure", "Docker", "Git", "Jenkins", "Python", "HTML", "Support"].map((skill, index) => (
                 <span
                   key={skill}
-                  className="inline-block px-3 py-1 text-xs bg-gray-800 text-gray-300 rounded-full"
+                  className="inline-block px-3 py-1.5 text-xs bg-gray-800 text-gray-300 rounded-full hover:bg-gray-700 hover:text-white transition-colors duration-300"
+                  style={{ transitionDelay: `${0.3 + index * 0.05}s` }}
                 >
                   {skill}
                 </span>
@@ -77,7 +91,14 @@ const Footer = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500">
-          <p>&copy; {currentYear} Sanobia Sadaf. All rights reserved.</p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+            <p>&copy; {currentYear} Sanobia Sadaf. All rights reserved.</p>
+            <div className="flex gap-4">
+              <a href="#" className="text-gray-500 hover:text-rose-light transition-colors">Privacy Policy</a>
+              <span className="hidden md:inline">|</span>
+              <a href="#" className="text-gray-500 hover:text-rose-light transition-colors">Terms of Use</a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

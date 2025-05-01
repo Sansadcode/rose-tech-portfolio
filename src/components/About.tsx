@@ -1,7 +1,26 @@
 
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const About = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setIsVisible(true);
+      }
+    }, { threshold: 0.2 });
+    
+    const section = document.getElementById("about");
+    if (section) observer.observe(section);
+    
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, []);
+
   const highlights = [
     {
       title: "7+ years",
@@ -44,19 +63,27 @@ const About = () => {
     },
   ];
 
+  const staggerDelay = 0.1;
+
   return (
-    <section id="about" className="section-container bg-white">
-      <div className="max-w-4xl mx-auto">
+    <section id="about" className="section-container bg-white relative overflow-hidden">
+      {/* Modern background elements */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-rose-light/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-rose-lighter/20 rounded-full blur-3xl"></div>
+      
+      <div className="max-w-4xl mx-auto relative z-10">
         <h2 className="section-title">About Me</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {highlights.map((highlight, index) => (
             <div 
               key={index} 
-              className="highlight-card flex flex-col items-center text-center animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className={`highlight-card flex flex-col items-center text-center transition-all duration-500 transform ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+              style={{ transitionDelay: `${index * staggerDelay + 0.1}s` }}
             >
-              <div className="mb-4 p-3 rounded-full bg-rose-light/20">
+              <div className="mb-4 p-3 rounded-full bg-rose-light/20 transition-all duration-300 hover:bg-rose-light/40">
                 {highlight.icon}
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -68,18 +95,18 @@ const About = () => {
         </div>
 
         <div className="prose max-w-none">
-          <div className="bg-gray-50 rounded-xl p-8 shadow-sm">
+          <div className="bg-gradient-to-r from-gray-50 to-rose-light/5 rounded-xl p-8 shadow-sm border border-rose-light/10">
             <p className="text-lg leading-relaxed text-gray-700 mb-6">
               I'm an IT professional with expertise in IT support, cloud platforms, DevOps, and user assistance. 
               I enjoy solving problems, learning new technologies, and delivering reliable technical solutions.
             </p>
             
-            <p className="text-gray-600 mb-8">
-              Mother of two, creative at heart, and always learning something new.
+            <p className="text-gray-600 mb-8 italic">
+              "Mother of two, creative at heart, and always learning something new."
             </p>
 
             <div className="flex justify-center">
-              <Button className="bg-rose hover:bg-rose/90">
+              <Button className="bg-rose hover:bg-rose/90 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                 Download Resume
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
